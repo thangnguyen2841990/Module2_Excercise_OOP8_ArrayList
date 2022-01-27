@@ -1,6 +1,8 @@
 package com.codegym;
 
-public class Pupil {
+import java.io.Serializable;
+
+public class Pupil implements Serializable {
     private String className;
     private String course;
     private String semester;

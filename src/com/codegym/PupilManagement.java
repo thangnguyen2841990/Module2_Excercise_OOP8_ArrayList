@@ -2,10 +2,12 @@ package com.codegym;
 
 import sun.java2d.pipe.SpanShapeRenderer;
 
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PupilManagement {
     private ArrayList<Pupil> pupils = new ArrayList<>();
@@ -61,5 +63,15 @@ public class PupilManagement {
             System.out.println(pupils.get(i));
         }
         }
+    }
+    public void writerToFile(List<Pupil> pupils, String path) throws IOException {
+        OutputStream os = new FileOutputStream(path);
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        oos.writeObject(pupils);
+    }
+    public void readerFile(String path) throws IOException, ClassNotFoundException {
+        InputStream is = new FileInputStream(path);
+        ObjectInputStream ois = new ObjectInputStream(is);
+        this.pupils = (ArrayList<Pupil>) ois.readObject();
     }
 }

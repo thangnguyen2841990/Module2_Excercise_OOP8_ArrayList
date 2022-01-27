@@ -1,5 +1,6 @@
 package com.codegym;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -9,13 +10,13 @@ public class Main {
     public static void main(String[] args) {
         PupilManagement pupilManagement = new PupilManagement();
         int choice = -1;
-        System.out.println("----MENU QUẢN LÝ HỌC SINH----");
-        System.out.println("1. Hiển thị toàn bộ thông tin học sinh.");
-        System.out.println("2. Nhặp thông tin học sinh.");
-        System.out.println("3. Hiển thị tất cả những học sinh sinh năm 1985 và quê ở Thái Nguyên.");
-        System.out.println("4. Hiển thị tất cả những học sinh của lớp 10A1.");
-        System.out.println("5. Thoát.");
+        try {
+            pupilManagement.readerFile("pupil.txt");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         while (true) {
+            menu();
             System.out.println("Nhập lựa chọn của bạn: ");
             choice = scanner.nextInt();
             if (choice > 5){
@@ -32,17 +33,12 @@ public class Main {
                 }
                 case 2 : {
                     System.out.println("----Nhập thông tin học sinh----");
-                    System.out.println("Nhập số lượng học sinh: ");
-                    int n = scanner.nextInt();
-                    Pupil newPupil;
-                    for (int i = 0; i < n; i++) {
-                        System.out.println("Nhập thông tin học sinh: " + (i+1));
-                        newPupil = inputPupilInfo();
+                       Pupil newPupil = inputPupilInfo();
                         pupilManagement.addPupil(newPupil);
                         System.out.println("Đã thêm thành công!");
                     }
                     break;
-                }
+
                 case 3 : {
                     System.out.println("----Hiển thị tất cả những học sinh sinh năm 1985 và quê ở Thái Nguyên----");
                     pupilManagement.findPupil1985();
@@ -53,10 +49,24 @@ public class Main {
                     pupilManagement.findPupilClass10A1("10A1");
                     break;
                 }
+
+            }
+            try {
+                pupilManagement.writerToFile(pupilManagement.getPupils(),"pupil.txt");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
 
+    }
+    public static void menu(){
+        System.out.println("----MENU QUẢN LÝ HỌC SINH----");
+        System.out.println("1. Hiển thị toàn bộ thông tin học sinh.");
+        System.out.println("2. Nhặp thông tin học sinh.");
+        System.out.println("3. Hiển thị tất cả những học sinh sinh năm 1985 và quê ở Thái Nguyên.");
+        System.out.println("4. Hiển thị tất cả những học sinh của lớp 10A1.");
+        System.out.println("5. Thoát.");
     }
     public static Pupil inputPupilInfo(){
         Scanner inputPupil = new Scanner(System.in);
